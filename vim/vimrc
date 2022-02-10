@@ -1,0 +1,191 @@
+" -----------------------------------------------------------------------------
+" VIM Plugins
+" -----------------------------------------------------------------------------
+" https://github.com/junegunn/vim-plug/wiki/tips#automatic-installation
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+    silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+" Start vim-plug code
+call plug#begin('~/.vim/plugged')
+    Plug 'https://github.com/Mangeshrex/uwu.vim.git'
+call plug#end()
+
+colorscheme uwu    " plugin colorscheme
+source ~/.files/vim/netrw_settings.vim
+
+
+" -----------------------------------------------------------------------------
+" VIM settings
+" -----------------------------------------------------------------------------
+set title          " change the terminal title
+set mouse=a        " Enable mouse
+set bg=dark
+set hlsearch       " Highlight search terms
+set incsearch      " Highlight incrementally while searching
+set number         " Show line number on cursor
+set relativenumber " Show relative line numbers
+syntax on          " Enable syntax highlighting
+set colorcolumn=80 " Draws column at 80 characters
+set nowrap         " Lines don't wrap
+set expandtab      " Tabs become spaces
+set shiftwidth=4   " Shifts only shift three spaces
+set softtabstop=0  " If non-zero, makes the <TAB> & <BS> keys feel like tabs
+set tabstop=4      " Tabs stop at three characters
+set backspace=indent,eol,start " Backspace over everything in insert mode
+set autoindent     " Auto indent
+set copyindent     " Use last line indentation, affects <BR> key
+set smarttab       " Insert new line tabs based on shiftwidth not tabstop
+set list           " List will mark any characters specified by `listchars`
+set listchars=tab:\ \ ,trail:·,extends:▶
+set wildignore=*.swp,*.bak,*.pyc,*.class,*.o " Don't auto-complete these files
+
+" -----------------------------------------------------------------------------
+" VIM tabs
+" -----------------------------------------------------------------------------
+set showtabline=2  " always display the tab bar
+" TODO: Figure out how to get tabs to only display file and not netrw
+
+" -----------------------------------------------------------------------------
+" Mappings
+" -----------------------------------------------------------------------------
+" Tab to cycle splits
+" TODO function to skip over netrw if its open
+nnoremap <Tab> <C-w>w
+" Shift+Tab to cycle tabs
+nnoremap <S-Tab> :tabn<CR>
+" Keep cursor at the bottom of the visual selection after you yank it.
+vmap y ygv<Esc>
+" Open netrw sidebar
+nnoremap <silent> <C-E> :ToggleNetrwExplorer<CR> 
+" Prevent x from overriding copy
+noremap x "_x
+noremap X "_X
+" Prevent selecting and pasting from overwriting what you originally copied.
+xnoremap p pgvy
+" Press * to search for the term under the cursor or a visual selection and
+" then press a key below to replace all instances of it in the current file.
+nnoremap <Leader>r :%s///gc<Left><Left><Left>
+" Clear search highlights.
+map <Leader>* :let @/=''<CR>
+
+" -----------------------------------------------------------------------------
+" Status line
+" -----------------------------------------------------------------------------
+" TODO: Move statusline settings to its own file
+" set laststatus=2 " statusline always on
+
+" Update status when focus changes buffers
+"TODO: Unique statuslines for each pane, currently all synced
+" augroup statusline
+"     autocmd!
+"     autocmd WinEnter,BufEnter * setlocal statusline=%!s:simpleStatusline(1)
+"     autocmd WinLeave,BufLeave * setlocal statusline=%!s:simpleStatusline(0)
+" augroup end
+
+function! s:simpleStatusline(status)
+
+    let mod = "%{&modified ? '[+] ' : !&modifiable ? '[x] ' : ''}"
+    let ro  = "%{&readonly ? '[RO] ' : ''}"
+    let ft  = "%{len(&filetype) ? '['.&filetype.'] ' : ''}"
+    let sep = ' %= '
+    let pos = ' %-12(%l : %c%V%) '
+    let pct = ' %P'
+
+    if getbufvar(winbufnr(winnr()), "&filetype") == "netrw"
+        let ret_status = ''
+    elseif a:status == 1
+        let ret_status = '[%n] %f %<'.mod.ro.ft.sep.pos.'%*'.pct
+    else
+        let ret_status = '%f'
+    endif
+
+    return ret_status
+
+endfunction
+
+let &statusline = s:simpleStatusline(0)
+
+"autocommand to update status line when the buffer changes size
+autocmd VimResized,FocusGained * &statusline
+" -----------------------------------------------------------------------------
+" autocommands
+" -----------------------------------------------------------------------------
+
+" Open markdown files with Chrome.
+" autocmd BufEnter *.md exe 'noremap <F5> :! /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome %:p<CR>'
+
+" Update buffer if focus is changed outside of vim
+au FocusGained,BufEnter * :checktime
+
+" Auto-resize splits when Vim is resized
+autocmd VimResized * wincmd = 
+
+" Adjust the column color of active pane
+" TODO: Adjust more settings to distinguish active pane
+function! OnWinEnter()
+    setlocal cursorline
+
+    if exists('w:initial_cc')
+        let &colorcolumn = w:initial_cc
+    endif
+endfunction
+
+function! OnWinLeave()
+    setlocal nocursorline
+
+    if !exists('w:initial_cc')
+        let w:initial_cc=&colorcolumn
+    endif
+        let &colorcolumn = 0
+endfunction
+
+augroup BgHighlight
+    autocmd!
+    " autocmd WinEnter,VimEnter,BufWinEnter * call OnWinEnter()
+    autocmd WinEnter,BufWinEnter * call OnWinEnter()
+    autocmd WinLeave * call OnWinLeave()
+augroup END
+
+" Only show the cursor line in the active buffer.
+" augroup CursorLine
+"     au!
+"     au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+"     au WinLeave * setlocal nocursorline
+" augroup END
+
+" Blink on highlight during search
+nnoremap <silent> n n:call HLNext(0.2)<cr>
+nnoremap <silent> N N:call HLNext(0.2)<cr>
+
+function! HLNext (blinktime)
+    highlight WhiteOnRed ctermfg=white ctermbg=red
+    let [bufnum, lnum, col, off] = getpos('.')
+    let matchlen = strlen(matchstr(strpart(getline('.'),col-1),@/))
+    let target_pat = '\c\%#'.@/
+    let blinks = 2
+
+    for n in range(1,blinks)
+        let red = matchadd('WhiteOnRed', target_pat, 101)
+        redraw
+        exec 'sleep ' . float2nr(a:blinktime / (2*blinks) * 1000) . 'm'
+        call matchdelete(red)
+        redraw
+        exec 'sleep ' . float2nr(a:blinktime / (2*blinks) * 1000) . 'm'
+    endfor
+endfunction
+
+" Toggle quickfix window.
+function! QuickFix_toggle()
+    for i in range(1, winnr('$'))
+        let bnum = winbufnr(i)
+        if getbufvar(bnum, '&buftype') == 'quickfix'
+            cclose
+            return
+        endif
+    endfor
+    copen
+endfunction
+nnoremap <silent> <Leader>c :call QuickFix_toggle()<CR>

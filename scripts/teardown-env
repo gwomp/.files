@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# Unlink all symbolic links
+unlink ~/.vimrc

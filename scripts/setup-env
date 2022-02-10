@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# Vim: Set up environment
+ln -s ~/.files/vim/vimrc \
+      ~/.vimrc
+
+# Vim: Setup necessary .vim directories if they don't exist.
+# mkdir -p ~/.vim/syntax
+# mkdir -p ~/.vim/ftdetect
+# mkdir -p ~/.vim/after/ftplugin
+# mkdir -p ~/.vim/autoload
+
+# Bash: Set up bash links.
+# ln -s ~/.files/bash/bash_profile ~/.bash_profile
+# ln -s ~/.files/bash/bashrc ~/.bashrc
