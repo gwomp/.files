@@ -7,7 +7,9 @@ ln -s ~/.files/vim/vimrc \
 # Vim: Setup necessary .vim directories if they don't exist.
 # mkdir -p ~/.vim/syntax
 # mkdir -p ~/.vim/ftdetect
-# mkdir -p ~/.vim/after/ftplugin
+mkdir -p ~/.vim/after
+ln -s ~/.files/vim/after/ftplugin \
+      ~/.vim/after/ftplugin
 # mkdir -p ~/.vim/autoload
 
 # Bash: Set up bash links.
