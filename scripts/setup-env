@@ -4,6 +4,11 @@
 ln -s ~/.files/vim/vimrc \
       ~/.vimrc
 
+ln -s ~/.files/tmux/tmux.conf \
+      ~/.tmux.conf
+
+ln -s ~/.files/bash/bash_aliases \
+      ~/.bash_aliases
 # Vim: Setup necessary .vim directories if they don't exist.
 # mkdir -p ~/.vim/syntax
 # mkdir -p ~/.vim/ftdetect

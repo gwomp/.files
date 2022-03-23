@@ -11,6 +11,8 @@ endif
 " Start vim-plug code
 call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-fugitive'           " git wrapper for vim
+    Plug 'tpope/vim-commentary'           " Code commenting
+    Plug 'sheerun/vim-polyglot'         " Syntax coloring
     Plug 'airblade/vim-gitgutter'
     Plug 'vim-airline/vim-airline'      " status/tab line
     Plug 'vim-airline/vim-airline-themes'
