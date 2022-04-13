@@ -11,9 +11,9 @@ endif
 " Start vim-plug code
 call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-fugitive'           " git wrapper for vim
-    Plug 'tpope/vim-commentary'           " Code commenting
+    Plug 'tpope/vim-commentary'         " Code commenting
     Plug 'sheerun/vim-polyglot'         " Syntax coloring
-    Plug 'airblade/vim-gitgutter'
+    Plug 'airblade/vim-gitgutter'       " Git Gutter display
     Plug 'vim-airline/vim-airline'      " status/tab line
     Plug 'vim-airline/vim-airline-themes'
     Plug 'https://github.com/Mangeshrex/uwu.vim.git'
@@ -22,10 +22,12 @@ call plug#end()
 " let g:airline#extensions#tabline#enabled = 1
 " let g:airline#extensions#tabline#fnamewod = ':t'
 
+" -----------------------------------------------------------------------------
+" Custom VIM Files
+" -----------------------------------------------------------------------------
 filetype plugin on " load settings by filetype from .vim/ftplugin
 source ~/.files/vim/snippets/snippets.vim " custom snippets
 source ~/.files/vim/netrw_settings.vim
-
 " -----------------------------------------------------------------------------
 " VIM/Style settings
 " -----------------------------------------------------------------------------
@@ -38,8 +40,6 @@ set nocompatible   " Don't emulate vi
 set mouse=a        " Enable mouse
 set hlsearch       " Highlight search terms
 set incsearch      " Highlight incrementally while searching
-set number         " Show line number on cursor
-set relativenumber " Show relative line numbers
 set colorcolumn=80 " Draws column at 80 characters
 set nowrap         " Lines don't wrap
 set expandtab      " Tabs become spaces
@@ -55,8 +55,17 @@ set listchars=tab:\ \ ,trail:·,extends:▶
 set wildignore=*.swp,*.bak,*.pyc,*.class,*.o " Don't auto-complete these files
 set path+=**       " fuzzy finder for file-related tasks
 set wildmenu       " display matching files when tab completing
-hi vertsplit guifg=bg guibg=CYAN term=NONE
 autocmd BufWritePre * :%s/\s\+$//e " remove trailing whitespace on save
+highlight Visual guifg=White guibg=LightBlue gui=none
+" -----------------------------------------------------------------------------
+" VIM Columns & Gutter
+" -----------------------------------------------------------------------------
+set number         " Show line number on cursor
+set relativenumber " Show relative line numbers
+hi vertsplit guifg=bg guibg=Grey term=NONE
+set foldcolumn=2
+highlight Folded ctermfg=Grey ctermbg=Blue
+highlight FoldColumn guibg=Black guifg=White
 " -----------------------------------------------------------------------------
 " VIM tabs
 " -----------------------------------------------------------------------------
@@ -109,11 +118,17 @@ noremap O O<Esc>
 " then press a key below to replace all instances of it in the current file.
 nnoremap <Leader>r :%s///gc<Left><Left><Left>
 
+" Jump to end of line before trying match
+noremap % $%
+
 " Clear search highlights.
 map <Leader>* :let @/=''<CR>
 
 " open terminal
 map <Leader>t :belowright terminal ++rows=10<CR>
+
+" Toggle Tagbar
+nmap <Leader>] :TagbarToggle<CR>
 
 " -----------------------------------------------------------------------------
 " autocommands

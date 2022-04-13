@@ -1,0 +1,16 @@
+#!/bin/bash
+
+#Find Code
+function search() {
+    local file=".SEARCH_$1";
+
+    grep -rn $1 $2 > ~/$file;
+
+    sed -i -r -e 's/\s+/ /g' ~/$file;
+    sed -i 's/\(:[0-9]\+:\)/\n\1/g' ~/$file;
+    cat ~/$file | nl | sort -k 2 | uniq -f 1 | sort -n -o ~/$file;
+    sed -i 's/\s*[0-9]\+\s\+//' ~/$file;
+    sed -i -e '/^:/!s//&/' ~/$file;
+    sed -i 's/^:/    /g' ~/$file;
+    cat ~/$file;
+}
