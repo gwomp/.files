@@ -1,6 +1,5 @@
 " -----------------------------------------------------------------------------
-" VIM Plugins
-" https://github.com/junegunn/vim-plug/wiki/tips#automatic-installation
+" VIM Plugins - https://github.com/junegunn/vim-plug/wiki/tips#automatic-installation
 " -----------------------------------------------------------------------------
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
 if empty(glob(data_dir . '/autoload/plug.vim'))
@@ -10,17 +9,19 @@ endif
 
 " Start vim-plug code
 call plug#begin('~/.vim/plugged')
-    Plug 'tpope/vim-fugitive'           " git wrapper for vim
-    Plug 'tpope/vim-commentary'         " Code commenting
-    Plug 'sheerun/vim-polyglot'         " Syntax coloring
-    Plug 'airblade/vim-gitgutter'       " Git Gutter display
-    Plug 'vim-airline/vim-airline'      " status/tab line
-    Plug 'vim-airline/vim-airline-themes'
-    Plug 'https://github.com/Mangeshrex/uwu.vim.git'
+    Plug 'vim-airline/vim-airline'          " status/tab line
+    Plug 'vim-airline/vim-airline-themes'   " airline themes
+    Plug 'sheerun/vim-polyglot'             " Syntax coloring
+    Plug 'tpope/vim-fugitive'               " git wrapper for vim
+    Plug 'tpope/vim-surround'               " change parantheticals
+    Plug 'airblade/vim-gitgutter'           " Git Gutter display
+    Plug 'tpope/vim-commentary'             " Code commenting
 call plug#end()
 
-" let g:airline#extensions#tabline#enabled = 1
-" let g:airline#extensions#tabline#fnamewod = ':t'
+" -----------------------------------------------------------------------------
+" VIM Plugin configurations
+" -----------------------------------------------------------------------------
+let g:airline#extensions#tabline#enabled = 1
 
 " -----------------------------------------------------------------------------
 " Custom VIM Files
@@ -28,16 +29,16 @@ call plug#end()
 filetype plugin on " load settings by filetype from .vim/ftplugin
 source ~/.files/vim/snippets/snippets.vim " custom snippets
 source ~/.files/vim/netrw_settings.vim
+
 " -----------------------------------------------------------------------------
 " VIM/Style settings
 " -----------------------------------------------------------------------------
-set title          " change the terminal title
-set visualbell      " turn off annoying bell noise
-syntax enable       " Enable syntax highlighting
-set background=dark
-colorscheme uwu     " plugin colorscheme
+syntax enable      " Enable syntax highlighting
 set nocompatible   " Don't emulate vi
 set mouse=a        " Enable mouse
+set visualbell     " turn off annoying bell noise
+set title          " change the terminal title
+set background=dark
 set hlsearch       " Highlight search terms
 set incsearch      " Highlight incrementally while searching
 set colorcolumn=80 " Draws column at 80 characters
@@ -47,40 +48,28 @@ set shiftwidth=4   " Shifts only shift three spaces
 set softtabstop=0  " If non-zero, makes the <TAB> & <BS> keys feel like tabs
 set tabstop=4      " Tabs stop at three characters
 set backspace=indent,eol,start " Backspace over everything in insert mode
-" set autoindent     " Auto indent
-" set copyindent     " Use last line indentation, affects <BR> key
-" set smarttab       " Insert new line tabs based on shiftwidth not tabstop
+set autoindent     " Auto indent
+set copyindent     " Use last line indentation, affects <BR> key
+set smarttab       " Insert new line tabs based on shiftwidth not tabstop
 set list           " List will mark any characters specified by `listchars`
 set listchars=tab:\ \ ,trail:·,extends:▶
 set wildignore=*.swp,*.bak,*.pyc,*.class,*.o " Don't auto-complete these files
 set path+=**       " fuzzy finder for file-related tasks
 set wildmenu       " display matching files when tab completing
-autocmd BufWritePre * :%s/\s\+$//e " remove trailing whitespace on save
 highlight Visual guifg=White guibg=LightBlue gui=none
-" -----------------------------------------------------------------------------
+
 " VIM Columns & Gutter
-" -----------------------------------------------------------------------------
 set number         " Show line number on cursor
 set relativenumber " Show relative line numbers
 hi vertsplit guifg=bg guibg=Grey term=NONE
+
 set foldcolumn=2
 highlight Folded ctermfg=Grey ctermbg=Blue
 highlight FoldColumn guibg=Black guifg=White
-" -----------------------------------------------------------------------------
-" VIM tabs
-" -----------------------------------------------------------------------------
-set showtabline=2  " always display the tab bar
-" TODO: Figure out how to get tabs to only display file and not netrw
-set guitablabel='\[%N\]\ %t\ %M'
-
-
-
-
 
 " -----------------------------------------------------------------------------
 " Mappings
 " -----------------------------------------------------------------------------
-
 " source .vimrc
 map <Leader>sv :source $MYVIMRC<CR>
 
@@ -90,11 +79,18 @@ nnoremap <Leader>e :24Lexplore<CR>
 " Open Git explorer
 nnoremap <Leader>g :Git<CR>
 
+" Open terminal
+map <Leader>t :belowright terminal ++rows=10<CR>
+
+" Toggle Tagbar
+nmap <Leader>] :TagbarToggle<CR>
+
+" Toggle QuickFix panel
+nnoremap <silent> <Leader>c :call QuickFix_toggle()<CR>
+
 " Tab to cycle tabs
 nnoremap <Tab> :tabn<CR>
 nnoremap <S-Tab> :tabp<CR>
-
-" Shift+Tab to cycle tabs
 
 " Insert Mode escape
 inoremap jk <Esc>
@@ -114,28 +110,21 @@ noremap X "_X
 noremap o o<Esc>
 noremap O O<Esc>
 
-" Press * to search for the term under the cursor or a visual selection and
-" then press a key below to replace all instances of it in the current file.
+" Replace all instances of term under cursor from *
 nnoremap <Leader>r :%s///gc<Left><Left><Left>
-
-" Jump to end of line before trying match
-noremap % $%
 
 " Clear search highlights.
 map <Leader>* :let @/=''<CR>
 
-" open terminal
-map <Leader>t :belowright terminal ++rows=10<CR>
-
-" Toggle Tagbar
-nmap <Leader>] :TagbarToggle<CR>
+" Blink on highlight during search
+nnoremap <silent> n n:call HLNext(0.2)<cr>
+nnoremap <silent> N N:call HLNext(0.2)<cr>
 
 " -----------------------------------------------------------------------------
-" autocommands
+" Autocommands & Functions
 " -----------------------------------------------------------------------------
-
-" Open markdown files with Chrome.
-" autocmd BufEnter *.md exe 'noremap <F5> :! /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome %:p<CR>'
+" remove trailing whitespace on save
+autocmd BufWritePre * :%s/\s\+$//e " Open markdown files with Chrome.
 
 " Update buffer if focus is changed outside of vim
 au FocusGained,BufEnter * :checktime
@@ -168,9 +157,7 @@ augroup ActiveWindowStyling
     autocmd WinLeave * call OnWinLeave()
 augroup END
 
-" Blink on highlight during search
-nnoremap <silent> n n:call HLNext(0.2)<cr>
-nnoremap <silent> N N:call HLNext(0.2)<cr>
+" Highlight Blink terms that are search and selected
 function! HLNext (blinktime)
     highlight WhiteOnRed ctermfg=white ctermbg=red
     let [bufnum, lnum, col, off] = getpos('.')
@@ -199,4 +186,3 @@ function! QuickFix_toggle()
     endfor
     copen
 endfunction
-nnoremap <silent> <Leader>c :call QuickFix_toggle()<CR>

@@ -2,3 +2,6 @@
 
 # Unlink all symbolic links
 unlink ~/.vimrc
+unlink ~/.tmux.conf
+unlink ~/.bash_aliases
+rm -rf ~/.vim
