@@ -1,20 +1,21 @@
 #!/bin/sh
-
-ln -s ~/.files/vim/vimrc \
-      ~/.vimrc
+ln -s ~/.files/bash/bash_aliases \
+      ~/.bash_aliases
 
 ln -s ~/.files/tmux/tmux.conf \
       ~/.tmux.conf
 
-ln -s ~/.files/bash/bash_aliases \
-      ~/.bash_aliases
+ln -s ~/.files/vim/vimrc \
+      ~/.vimrc
 
-# Vim: Setup necessary .vim directories if they don't exist.
-# mkdir -p ~/.vim/syntax
-# mkdir -p ~/.vim/ftdetect
+# Vim: setup
 mkdir -p ~/.vim/after
 ln -s ~/.files/vim/after/ftplugin \
       ~/.vim/after/ftplugin
+
+mkdir -p ~/.vim/colors
+ln -s ~/.files/vim/colors/melvor.vim \
+      ~/.vim/colors/melvor.vim
 
 # Bash: Set up bash links.
 # ln -s ~/.files/bash/bash_profile ~/.bash_profile
