@@ -1,16 +1,16 @@
-" -----------------------------------------------------------------------------
-" VIM Plugins - https://github.com/junegunn/vim-plug/wiki/tips#automatic-installation
-" -----------------------------------------------------------------------------
+"-----------------------------------------------------------------------------
+" vim-plug plugin manager
+"-----------------------------------------------------------------------------
+" https://github.com/junegunn/vim-plug/wiki/tips#automatic-installation
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
 if empty(glob(data_dir . '/autoload/plug.vim'))
-    silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+    silent execute "!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs\
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-" Start vim-plug code
 call plug#begin('~/.vim/plugged')
-    Plug 'vim-airline/vim-airline'          " status/tab line
-    Plug 'vim-airline/vim-airline-themes'   " airline themes
+    Plug 'itchyny/lightline.vim'            " Minimalist status/tab line
     Plug 'sheerun/vim-polyglot'             " Syntax coloring
     Plug 'tpope/vim-fugitive'               " git wrapper for vim
     Plug 'tpope/vim-surround'               " change parantheticals
@@ -19,22 +19,40 @@ call plug#begin('~/.vim/plugged')
 call plug#end()
 
 " -----------------------------------------------------------------------------
-" VIM Plugin configurations
+" plugin configurations
 " -----------------------------------------------------------------------------
-let g:airline#extensions#tabline#enabled = 1
+" itchyny/lightline.vim
+set laststatus=2
+let g:lightline = {
+    \ 'colorscheme': 'one',
+    \ 'active': {
+    \   'left': [ [ 'mode', 'paste' ],
+    \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+    \ },
+    \ 'component_function': {
+    \   'gitbranch': 'FugitiveHead'
+    \ },
+\ }
+
+" airblade/vim-gitgutter
+highlight SignColumn        ctermbg=Black   guibg=Black
+highlight GitGutterDelete   ctermfg=Red     guifg=Red
+highlight GitGutterAdd      ctermfg=Green   guifg=Green
+highlight GitGutterChange   ctermfg=Blue    guifg=Blue
 
 " -----------------------------------------------------------------------------
-" Custom VIM Files
+" custom files
 " -----------------------------------------------------------------------------
 filetype plugin on " load settings by filetype from .vim/ftplugin
 source ~/.files/vim/snippets/snippets.vim " custom snippets
 source ~/.files/vim/netrw_settings.vim
 
 " -----------------------------------------------------------------------------
-" VIM/Style settings
+" style settings
 " -----------------------------------------------------------------------------
 syntax enable      " Enable syntax highlighting
 set nocompatible   " Don't emulate vi
+set noshowmode     " Don't display, handled by lightlight plugin
 set mouse=a        " Enable mouse
 set visualbell     " turn off annoying bell noise
 set title          " change the terminal title
@@ -56,16 +74,19 @@ set listchars=tab:\ \ ,trail:·,extends:▶
 set wildignore=*.swp,*.bak,*.pyc,*.class,*.o " Don't auto-complete these files
 set path+=**       " fuzzy finder for file-related tasks
 set wildmenu       " display matching files when tab completing
+
 highlight Visual guifg=White guibg=LightBlue gui=none
 
 " VIM Columns & Gutter
 set number         " Show line number on cursor
 set relativenumber " Show relative line numbers
-hi vertsplit guifg=bg guibg=Grey term=NONE
+highlight VertSplit     ctermbg=Black       guibg=Grey
+highlight LineNrAbove   ctermfg=LightRed    guifg=LightRed
+highlight LineNrBelow   ctermfg=LightGreen  guifg=LightGreen
 
 set foldcolumn=2
-highlight Folded ctermfg=Grey ctermbg=Blue
-highlight FoldColumn guibg=Black guifg=White
+highlight FoldColumn    ctermbg=Black  guibg=Black
+highlight Folded        ctermbg=Blue ctermfg=Grey
 
 " -----------------------------------------------------------------------------
 " Mappings
@@ -114,7 +135,7 @@ noremap O O<Esc>
 nnoremap <Leader>r :%s///gc<Left><Left><Left>
 
 " Clear search highlights.
-map <Leader>* :let @/=''<CR>
+map <Leader>8 :let @/=''<CR>
 
 " Blink on highlight during search
 nnoremap <silent> n n:call HLNext(0.2)<cr>
@@ -133,7 +154,6 @@ au FocusGained,BufEnter * :checktime
 autocmd VimResized * wincmd =
 
 " Adjust the column color of active pane
-" TODO: Adjust more settings to distinguish active pane
 function! OnWinEnter()
     setlocal cursorline
 

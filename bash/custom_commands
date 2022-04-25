@@ -4,13 +4,13 @@
 function search() {
     local file="SEARCH_$1";
 
-    grep -rn $1 $2 > ~/.files/.search/$file;
+    grep -rn $1 $2 > ~/$file;
 
-    sed -i -r -e 's/\s+/ /g' ~/.files/.search/$file;
+    sed -i -r -E 's/\s+/ /g' ~/$file;
     sed -i 's/\(:[0-9]\+:\)/\n\1/g' ~/$file;
-    cat ~/.files/.search/$file | nl | sort -k 2 | uniq -f 1 | sort -n -o ~/.files/.search/$file;
-    sed -i 's/\s*[0-9]\+\s\+//' ~/.files/.search/$file;
-    sed -i -e '/^:/!s//&/' ~/.files/.search/$file;
-    sed -i 's/^:/    /g' ~/.files/.search/$file;
-    cat ~/.files/.search/$file;
+    cat ~/$file | nl | sort -k 2 | uniq -f 1 | sort -n -o ~/$file;
+    sed -i 's/\s*[0-9]\+\s\+//' ~/$file;
+    sed -i -e '/^:/!s//&/' ~/$file;
+    sed -i 's/^:/    /g' ~/$file;
+    cat ~/$file;
 }
