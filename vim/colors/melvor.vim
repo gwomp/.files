@@ -1,22 +1,24 @@
 " Setting up the colors
-let s:melvor0_gui = "#232a35"   " Black
-let s:melvor1_gui = "#e06e6e"   " DarkBlue
-let s:melvor2_gui = "#8ccf7e"   " DarkGreen
-let s:melvor3_gui = "#e5c76b"   " DarkCyan
-let s:melvor4_gui = "#67b0e8"   " DarkRed
-let s:melvor5_gui = "#c47fd5"   " DarkMagenta
-let s:melvor6_gui = "#6cd0ca"   " Brown, DarkYellow
+let s:melvor0_gui = "#232A35"   " Black
+let s:melvor1_gui = "#5179D6"   " DarkBlue
+let s:melvor2_gui = "#30C78D"   " DarkGreen
+let s:melvor3_gui = "#4194D9"   " DarkCyan
+let s:melvor4_gui = "#D92220"   " DarkRed
+let s:melvor5_gui = "#7064E3"   " DarkMagenta
+let s:melvor6_gui = "#F3D55B"   " Brown, DarkYellow
 let s:melvor7_gui = "#b3b9b8"   " LightGray, Gray
-let s:melvor8_gui = "#3b4244"   " DarkGray
-let s:melvor9_gui = "#ef7d7d"   " Blue, LightBlue
-let s:melvor10_gui = "#9bdead"  " Green, LightGreen
-let s:melvor11_gui = "#f4d67a"  " Cyan, LightCyan
-let s:melvor12_gui = "#6cb5ed"  " Red, LightRed
-let s:melvor13_gui = "#ce89df"  " Magenta, LightMagenta
-let s:melvor14_gui = "#67cbe7"  " Yellow, LightYellow
-let s:melvor15_gui = "#bdc3c2"  " White
-let s:melvorbg_gui = "#181f21"  "
-let s:melvorfg_gui = "#dadada"  "
+
+let s:melvor8_gui = "#394556"   " DarkGray
+let s:melvor9_gui = "#7B99E0"   " Blue, LightBlue
+let s:melvor10_gui = "#4AD39F"  " Green, LightGreen
+let s:melvor11_gui = "#66A9E1"  " Cyan, LightCyan
+let s:melvor12_gui = "#E4504E"  " Red, LightRed
+let s:melvor13_gui = "#9086E9"  " Magenta, LightMagenta
+let s:melvor14_gui = "#F6E18D"  " Yellow, LightYellow
+let s:melvor15_gui = "#F5F5F5"  " White
+
+let s:melvorbg_gui = "#181f21"  " Background
+let s:melvorfg_gui = "#F5F5F5"  " Foreground
 
 let s:melvorNR_fg = s:melvor7_gui
 
@@ -44,6 +46,9 @@ endif
 if g:melvorNR == 0
     let s:melvorNR_fg = .s:melvor0_gui
 endif
+
+exe "hi LineNrAbove   ctermfg=LightRed    guifg=LightRed"
+exe "hi LineNrBelow   ctermfg=LightGreen  guifg=LightGreen"
 
 "Syntax Highlighting
 exe "hi CursorLineNR guifg=" s:melvorNR_fg
@@ -88,18 +93,18 @@ exe "hi Operator guifg=" s:melvor4_gui
 exe "hi ColorColumn guibg=" s:melvor8_gui
 exe "hi PMenu guifg="s:melvor7_gui." guibg=" s:melvor0_gui
 exe "hi PMenuSel guifg="s:melvor8_gui." guibg="s:melvor5_gui
-exe "hi SignColumn guibg=" s:melvor0_gui
+exe "hi SignColumn guibg=" s:melvorbg_gui
 exe "hi Title guifg=" s:melvor3_gui
 exe "hi LineNr guifg="s:melvor8_gui
 exe "hi NonText guifg="s:melvor5_gui." guibg="s:melvor0_gui
 exe "hi Comment guifg="s:melvor8_gui "gui=italic"
 exe "hi SpecialComment guifg="s:melvor8_gui "gui=italic guibg=NONE "
-exe "hi TabLineFill gui=NONE guibg="s:melvor8_gui
-exe "hi TabLine guifg="s:melvor7_gui." guibg="s:melvor8_gui
+exe "hi TabLineFill gui=NONE guibg="s:melvorbg_gui
+exe "hi TabLine guifg="s:melvorbg_gui." guibg="s:melvorbg_gui
 exe "hi StatusLine guibg="s:melvorbg_gui." guifg="s:melvorfg_gui
 exe "hi StatusLineNC guibg="s:melvorbg_gui." guifg="s:melvorfg_gui
 exe "hi Search guibg="s:melvor8_gui." guifg="s:melvor4_gui
-exe "hi VertSplit gui=NONE guifg="s:melvor0_gui." guibg="s:melvor0_gui
+exe "hi VertSplit gui=NONE guifg="s:melvor8_gui." guibg="s:melvor8_gui
 exe "hi Visual gui=NONE guibg="s:melvor0_gui
 exe "hi Underlined guifg="s:melvor3_gui
 exe "hi EndOfBuffer guibg=NONE"
@@ -117,9 +122,9 @@ exe "hi DiffDelete guifg="s:melvor6_gui." guibg="s:melvorbg_gui
 exe "hi DiffText guifg="s:melvor1_gui." guibg="s:melvorbg_gui
 
 " GitGutter Highlightings
-exe "hi GitGutterAdd guifg="s:melvor3_gui
-exe "hi GitGutterChange guifg="s:melvor1_gui
-exe "hi GitGutterDelete guifg="s:melvor3_gui
+exe "hi GitGutterAdd guifg="s:melvor10_gui
+exe "hi GitGutterChange guifg="s:melvor14_gui
+exe "hi GitGutterDelete guifg="s:melvor12_gui
 exe "hi GitGutterChangeDelete guifg="s:melvor4_gui
 exe "hi GitGutterLineHighlightsEnable guifg="s:melvor9_gui." guibg="s:melvor8_gui
 

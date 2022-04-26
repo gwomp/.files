@@ -10,11 +10,11 @@ endif
 
 call plug#begin('~/.vim/plugged')
     Plug 'itchyny/lightline.vim'            " Minimalist status/tab line
-    Plug 'sheerun/vim-polyglot'             " Syntax coloring
     Plug 'tpope/vim-fugitive'               " git wrapper for vim
     Plug 'tpope/vim-surround'               " change parantheticals
-    Plug 'airblade/vim-gitgutter'           " Git Gutter display
     Plug 'tpope/vim-commentary'             " Code commenting
+    Plug 'airblade/vim-gitgutter'           " Git Gutter display
+    Plug 'sheerun/vim-polyglot'             " Syntax coloring
 call plug#end()
 
 " -----------------------------------------------------------------------------
@@ -34,11 +34,6 @@ let g:lightline = {
     \ },
 \ }
 
-" airblade/vim-gitgutter
-highlight SignColumn        ctermbg=Grey   guibg=Black
-highlight GitGutterDelete   ctermfg=Red     guifg=Red
-highlight GitGutterAdd      ctermfg=Green   guifg=Green
-highlight GitGutterChange   ctermfg=Blue    guifg=Blue
 
 " -----------------------------------------------------------------------------
 " custom files
@@ -81,9 +76,6 @@ highlight Visual guifg=White guibg=LightBlue gui=none
 " VIM Columns & Gutter
 set number         " Show line number on cursor
 set relativenumber " Show relative line numbers
-highlight VertSplit     ctermbg=Black       guibg=Grey
-highlight LineNrAbove   ctermfg=LightRed    guifg=LightRed
-highlight LineNrBelow   ctermfg=LightGreen  guifg=LightGreen
 
 " set foldcolumn=2
 " highlight FoldColumn    ctermbg=Black  guibg=Grey
@@ -146,7 +138,7 @@ nnoremap <silent> N N:call HLNext(0.2)<cr>
 " Autocommands & Functions
 " -----------------------------------------------------------------------------
 " remove trailing whitespace on save
-autocmd BufWritePre * :%s/\s\+$//e " Open markdown files with Chrome.
+" autocmd BufWritePre * :%s/\s\+$//e " Open markdown files with Chrome.
 
 " Update buffer if focus is changed outside of vim
 au FocusGained,BufEnter * :checktime
@@ -154,22 +146,13 @@ au FocusGained,BufEnter * :checktime
 " Auto-resize splits when Vim is resized
 autocmd VimResized * wincmd =
 
-" Adjust the column color of active pane
+" Settings on changing windows
 function! OnWinEnter()
     setlocal cursorline
-
-    if exists('w:initial_cc')
-        let &colorcolumn = w:initial_cc
-    endif
 endfunction
 
 function! OnWinLeave()
     setlocal nocursorline
-
-    if !exists('w:initial_cc')
-        let w:initial_cc=&colorcolumn
-    endif
-        let &colorcolumn = 0
 endfunction
 
 augroup ActiveWindowStyling
