@@ -20,11 +20,12 @@ call plug#end()
 " -----------------------------------------------------------------------------
 " plugin configurations
 " -----------------------------------------------------------------------------
+colorscheme melvor
 
 " itchyny/lightline.vim
 set laststatus=2
+
 let g:lightline = {
-    \ 'colorscheme': 'one',
     \ 'active': {
     \   'left': [ [ 'mode', 'paste' ],
     \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
@@ -45,12 +46,11 @@ source ~/.files/vim/netrw_settings.vim
 " -----------------------------------------------------------------------------
 " style settings
 " -----------------------------------------------------------------------------
-colorscheme melvor
 syntax enable      " Enable syntax highlighting
 set nocompatible   " Don't emulate vi
 set noshowmode     " Don't display, handled by lightlight plugin
 set mouse=a        " Enable mouse
-set visualbell     " turn off annoying bell noise
+" set visualbell     " turn off annoying bell noise
 set title          " change the terminal title
 set background=dark
 set hlsearch       " Highlight search terms
@@ -62,16 +62,15 @@ set shiftwidth=4   " Shifts only shift three spaces
 set softtabstop=0  " If non-zero, makes the <TAB> & <BS> keys feel like tabs
 set tabstop=4      " Tabs stop at three characters
 set backspace=indent,eol,start " Backspace over everything in insert mode
-set autoindent     " Auto indent
-set copyindent     " Use last line indentation, affects <BR> key
-set smarttab       " Insert new line tabs based on shiftwidth not tabstop
+" set autoindent     " Auto indent
+" set copyindent     " Use last line indentation, affects <BR> key
+" set smarttab       " Insert new line tabs based on shiftwidth not tabstop
 set list           " List will mark any characters specified by `listchars`
 set listchars=tab:\ \ ,trail:·,extends:▶
 set wildignore=*.swp,*.bak,*.pyc,*.class,*.o " Don't auto-complete these files
 set path+=**       " fuzzy finder for file-related tasks
 set wildmenu       " display matching files when tab completing
 
-highlight Visual guifg=White guibg=LightBlue gui=none
 
 " VIM Columns & Gutter
 set number         " Show line number on cursor
@@ -101,6 +100,8 @@ nmap <Leader>] :TagbarToggle<CR>
 
 " Toggle QuickFix panel
 nnoremap <silent> <Leader>c :call QuickFix_toggle()<CR>
+
+nnoremap <silent> <Leader>h :call SynGroup()<CR>
 
 " Tab to cycle tabs
 nnoremap <Tab> :tabn<CR>
@@ -138,7 +139,7 @@ nnoremap <silent> N N:call HLNext(0.2)<cr>
 " Autocommands & Functions
 " -----------------------------------------------------------------------------
 " remove trailing whitespace on save
-" autocmd BufWritePre * :%s/\s\+$//e " Open markdown files with Chrome.
+autocmd BufWritePre * :%s/\s\+$//e " Open markdown files with Chrome.
 
 " Update buffer if focus is changed outside of vim
 au FocusGained,BufEnter * :checktime
@@ -190,3 +191,8 @@ function! QuickFix_toggle()
     endfor
     copen
 endfunction
+
+function! SynGroup()
+    let l:s = synID(line('.'), col('.'), 1)
+    echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
+endfun
