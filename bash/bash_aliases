@@ -1,3 +1,4 @@
 alias smdev='tmux new-session -A -s smdev'
 alias smvim='cd ~/dev/carl/SurveyManager; vim'
 alias grep='grep -rn --color=auto'
+alias gitstore='git config credential.helper store'

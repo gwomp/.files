@@ -1,4 +1,5 @@
 " Setting up the colors
+
 " let s:melvor0_gui = "#232A35"   " Black
 let s:melvor0_gui = "#181f21"   " Black
 let s:melvor1_gui = "#5179D6"   " DarkBlue
@@ -18,14 +19,14 @@ let s:melvor13_gui = "#9086E9"  " Magenta, LightMagenta
 let s:melvor14_gui = "#F6E18D"  " Yellow, LightYellow
 let s:melvor15_gui = "#F5F5F5"  " White
 
-let s:melvorbg_gui = "#232A35"  " Background
-" let s:melvorbg_gui = "#181f21"  " Background
+" let s:melvorbg_gui = "#232A35"  " Background
+let s:melvorbg_gui = "#181f21"  " Background
 let s:melvorfg_gui = "#F5F5F5"  " Foreground
 
 let s:melvorNR_fg = s:melvor7_gui
 
 hi clear
-syntax reset
+" syntax reset
 let g:colors_name = "melvor"
 set background=dark
 set t_Co=256
@@ -53,6 +54,23 @@ exe "hi LineNrAbove guifg="s:melvor8_gui
 exe "hi LineNr      guifg="s:melvor8_gui
 exe "hi LineNrBelow guifg="s:melvor8_gui
 
+let s:melvorColors = [
+    \{ "prop": "Comment", "guifg": s:melvor8_gui, "gui": "italic" },
+    \{ "prop": "Constant", "guifg": s:melvor8_gui, "gui": "italic" },
+    \{ "prop": "Comment", "guifg": s:melvor8_gui, "gui": "italic" },
+\]
+
+" for i in s:melvorColors
+"     let s:hiString = "hi "
+"
+"     if has_key(i, "guifg")
+"         echo i.guifg
+"     else
+"         echo i.guifg
+"     endif
+"
+" endfor
+
 "Syntax Highlighting
 exe "hi Comment guifg="s:melvor8_gui "gui=italic"
 exe "hi Constant guifg=" s:melvor3_gui
@@ -79,7 +97,7 @@ exe "hi Type guifg=" s:melvor12_gui
 exe "hi StorageClass guifg="s:melvor3_gui
 exe "hi Structure guifg="s:melvor3_gui
 exe "hi Typedef guifg="s:melvor3_gui
-exe "hi Special guifg=" s:melvor4_gui
+exe "hi Special guifg=" s:melvor6_gui
 exe "hi SpecialChar guifg=" s:melvor4_gui
 exe "hi Tag guifg=" s:melvor15_gui
 exe "hi Delimiter guifg=" s:melvor7_gui
@@ -202,4 +220,3 @@ exe "hi netrwTreeBar guifg="s:melvorbg_gui." guibg="s:melvorbg_gui
 " jsSource
 " jsGlobalObjects
 " jsExceptions
-"

@@ -20,7 +20,8 @@ call plug#end()
 " -----------------------------------------------------------------------------
 " plugin configurations
 " -----------------------------------------------------------------------------
-colorscheme melvor
+colorscheme tn80s
+" colorscheme melvor
 
 " itchyny/lightline.vim
 set laststatus=2
@@ -138,6 +139,8 @@ nnoremap <silent> N N:call HLNext(0.2)<cr>
 " -----------------------------------------------------------------------------
 " Autocommands & Functions
 " -----------------------------------------------------------------------------
+" autocmd BufEnter *.md exe 'noremap <F5> :! /mnt/c/Users/carl.ungaro/Documents/msedge.exe %:p<CR>'
+autocmd BufEnter *.md exe 'noremap <F5> :! wslview %:p<CR>'
 " remove trailing whitespace on save
 autocmd BufWritePre * :%s/\s\+$//e " Open markdown files with Chrome.
 
