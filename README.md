@@ -1,2 +1,2 @@
 # .files
-config files for new terminal setup
+config files for my terminal setup
