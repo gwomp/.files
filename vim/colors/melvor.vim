@@ -54,23 +54,6 @@ exe "hi LineNrAbove guifg="s:melvor8_gui
 exe "hi LineNr      guifg="s:melvor8_gui
 exe "hi LineNrBelow guifg="s:melvor8_gui
 
-let s:melvorColors = [
-    \{ "prop": "Comment", "guifg": s:melvor8_gui, "gui": "italic" },
-    \{ "prop": "Constant", "guifg": s:melvor8_gui, "gui": "italic" },
-    \{ "prop": "Comment", "guifg": s:melvor8_gui, "gui": "italic" },
-\]
-
-" for i in s:melvorColors
-"     let s:hiString = "hi "
-"
-"     if has_key(i, "guifg")
-"         echo i.guifg
-"     else
-"         echo i.guifg
-"     endif
-"
-" endfor
-
 "Syntax Highlighting
 exe "hi Comment guifg="s:melvor8_gui "gui=italic"
 exe "hi Constant guifg=" s:melvor3_gui
