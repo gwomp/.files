@@ -8,17 +8,6 @@ ln -sf ~/.files/tmux/tmux.conf \
 ln -sf ~/.files/vim/vimrc \
       ~/.vimrc
 
-# Vim: setup
-mkdir -p ~/.vim/after
-mkdir -p ~/.vim/colors
-
-ln -sf ~/.files/vim/after/ftplugin \
-      ~/.vim/after/ftplugin
-ln -sf ~/.files/vim/colors/melvor.vim \
-      ~/.vim/colors/melvor.vim
-ln -sf ~/.files/vim/colors/tn80s.vim \
-      ~/.vim/colors/tn80s.vim
-
 # Bash: Set up bash links.
 # ln -s ~/.files/bash/bash_profile ~/.bash_profile
 # ln -s ~/.files/bash/bashrc ~/.bashrc

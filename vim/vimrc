@@ -75,7 +75,7 @@ set wildmenu       " display matching files when tab completing
 
 " VIM Columns & Gutter
 set number         " Show line number on cursor
-set relativenumber " Show relative line numbers
+" set relativenumber " Show relative line numbers
 
 " set foldcolumn=2
 " highlight FoldColumn    ctermbg=Black  guibg=Grey
@@ -90,37 +90,9 @@ map <Leader>sv :source $MYVIMRC<CR>
 " Open netrw sidebar
 nnoremap <Leader>e :24Lexplore<CR>
 
-" Open Git explorer
-nnoremap <Leader>g :Git<CR>
-
-" Open terminal
-map <Leader>t :belowright terminal ++rows=10<CR>
-
-" Toggle Tagbar
-nmap <Leader>] :TagbarToggle<CR>
-
-" Toggle QuickFix panel
-nnoremap <silent> <Leader>c :call QuickFix_toggle()<CR>
-
-nnoremap <silent> <Leader>h :call SynGroup()<CR>
-
-" Tab to cycle tabs
-nnoremap <Tab> :tabn<CR>
-nnoremap <S-Tab> :tabp<CR>
-
 " Insert Mode escape
 inoremap jk <Esc>
 inoremap kj <Esc>
-
-" Keep cursor at the bottom of the visual selection after you yank it.
-vmap y ygv<Esc>
-
-" Prevent selecting and pasting from overwriting what you originally copied.
-xnoremap p pgvy
-
-" Prevent x from overriding copy
-noremap x "_x
-noremap X "_X
 
 " Escape to normal mode after inserting a line
 noremap o o<Esc>
@@ -136,13 +108,20 @@ map <Leader>8 :let @/=''<CR>
 nnoremap <silent> n n:call HLNext(0.2)<cr>
 nnoremap <silent> N N:call HLNext(0.2)<cr>
 
+" Open terminal
+map <Leader>t :belowright terminal ++rows=10<CR>
+
+" Toggle QuickFix panel
+nnoremap <silent> <Leader>c :call QuickFix_toggle()<CR>
+
+" Open Git explorer
+nnoremap <Leader>g :Git<CR>
+
 " -----------------------------------------------------------------------------
 " Autocommands & Functions
 " -----------------------------------------------------------------------------
-" autocmd BufEnter *.md exe 'noremap <F5> :! /mnt/c/Users/carl.ungaro/Documents/msedge.exe %:p<CR>'
-autocmd BufEnter *.md exe 'noremap <F5> :! wslview %:p<CR>'
 " remove trailing whitespace on save
-autocmd BufWritePre * :%s/\s\+$//e " Open markdown files with Chrome.
+autocmd BufWritePre * :%s/\s\+$//e
 
 " Update buffer if focus is changed outside of vim
 au FocusGained,BufEnter * :checktime
@@ -152,11 +131,11 @@ autocmd VimResized * wincmd =
 
 " Settings on changing windows
 function! OnWinEnter()
-    setlocal cursorline
+"    setlocal cursorline
 endfunction
 
 function! OnWinLeave()
-    setlocal nocursorline
+"    setlocal nocursorline
 endfunction
 
 augroup ActiveWindowStyling
@@ -194,8 +173,3 @@ function! QuickFix_toggle()
     endfor
     copen
 endfunction
-
-function! SynGroup()
-    let l:s = synID(line('.'), col('.'), 1)
-    echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
-endfun
