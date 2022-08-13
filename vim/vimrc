@@ -50,6 +50,9 @@ source ~/.files/vim/netrw_settings.vim
 syntax enable      " Enable syntax highlighting
 set nocompatible   " Don't emulate vi
 set noshowmode     " Don't display, handled by lightlight plugin
+set nobackup
+set nowritebackup
+set noswapfile
 set mouse=a        " Enable mouse
 " set visualbell     " turn off annoying bell noise
 set title          " change the terminal title
