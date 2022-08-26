@@ -20,8 +20,6 @@ call plug#end()
 " -----------------------------------------------------------------------------
 " plugin configurations
 " -----------------------------------------------------------------------------
-colorscheme tn80s
-" colorscheme melvor
 
 " itchyny/lightline.vim
 set laststatus=2

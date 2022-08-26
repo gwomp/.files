@@ -1,2 +1,0 @@
-When the ssh won't connect with vpn
-$ sudo ip li set mtu 1200 dev eth0
