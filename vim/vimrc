@@ -15,6 +15,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-commentary'             " Code commenting
     Plug 'airblade/vim-gitgutter'           " Git Gutter display
     Plug 'sheerun/vim-polyglot'             " Syntax coloring
+    Plug 'maksimr/vim-jsbeautify'           " js, html, css formatting
 call plug#end()
 
 " -----------------------------------------------------------------------------
@@ -57,7 +58,7 @@ set title          " change the terminal title
 set background=dark
 set hlsearch       " Highlight search terms
 set incsearch      " Highlight incrementally while searching
-set colorcolumn=80 " Draws column at 80 characters
+" set colorcolumn=80 " Draws column at 80 characters
 set nowrap         " Lines don't wrap
 set expandtab      " Tabs become spaces
 set shiftwidth=4   " Shifts only shift three spaces
@@ -130,13 +131,17 @@ au FocusGained,BufEnter * :checktime
 " Auto-resize splits when Vim is resized
 autocmd VimResized * wincmd =
 
+autocmd VimEnter,WinEnter * let &scrolloff = winheight(0) / 10
+
 " Settings on changing windows
 function! OnWinEnter()
-"    setlocal cursorline
+    setlocal cursorline
+    set colorcolumn=80
 endfunction
 
 function! OnWinLeave()
-"    setlocal nocursorline
+    setlocal nocursorline
+    set colorcolumn=80
 endfunction
 
 augroup ActiveWindowStyling
