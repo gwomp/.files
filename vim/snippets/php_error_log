@@ -1,2 +1,0 @@
-$err_msg = "";
-error_log(PHP_EOL . __FILE__ . __LINE__ . PHP_EOL . json_encode($err_msg), 3, "/etc/php/8.1/dev.log");

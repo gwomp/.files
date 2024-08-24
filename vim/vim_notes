@@ -1,2 +1,0 @@
-" Searches for ) \n { to allow for replacing brackets on separate lines
-/)\n\s\+{

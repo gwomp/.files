@@ -1,6 +1,0 @@
-$time_pre = microtime(true);
-$time_post = microtime(true);
-$exec_time = round($time_post - $time_pre, 2);
-$error_msg = "\nTIME: $exec_time";
-error_log($error_msg, 3, "/etc/php/8.1/dev.log");
-

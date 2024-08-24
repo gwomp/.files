@@ -1,0 +1,35 @@
+#!/bin/sh
+
+create_symlink() {
+    local source=$1
+    local target=$2
+
+    # Check if target is a symlink and points to the correct source
+    if [ -L "$target" ]; then
+        if [ "$(readlink "$target")" = "$source" ]; then
+            echo "$target is already linked to $source"
+            return
+        else
+            # Backup existing link or file if it points to something else
+            mv "$target" "${target}.bak"
+            echo "Backed up $target to ${target}.bak"
+        fi
+    elif [ -e "$target" ]; then
+        # Backup existing file if it is not a symlink
+        mv "$target" "${target}.bak"
+        echo "Backed up $target to ${target}.bak"
+    fi
+
+    # Create symbolic link
+    ln -sf "$source" "$target"
+    echo "Linked $source to $target"
+}
+
+# Setup bash aliases
+create_symlink ~/.files/bash/bash_aliases ~/.bash_aliases
+
+# Setup tmux configuration
+create_symlink ~/.files/tmux/tmux.conf ~/.tmux.conf
+
+# Setup Neovim configuration
+create_symlink ~/.files/nvim ~/.config/nvim

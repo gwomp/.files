@@ -1,6 +1,0 @@
-$sql = "MYSQLQUERY";
-$stmt = $mysqli->prepare($sql);
-$stmt->bind_param("VAR_TYPE_STRING", );
-$stmt->execute();
-$result = $stmt->get_result();
-$stmt->close();
