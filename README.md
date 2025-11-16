@@ -1,0 +1,2 @@
+# .files
+terminal setup

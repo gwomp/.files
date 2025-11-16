@@ -1,0 +1,170 @@
+" ------------------------------------
+"       PLUGIN MANAGER (vim-plug)
+" ------------------------------------
+
+" Auto-install vim-plug if missing
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+call plug#begin('~/.vim/plugged')
+    Plug 'preservim/nerdtree'               " File system explorer
+    Plug 'junegunn/fzf'                     " Fuzzy finder (requires fzf installed)
+    Plug 'junegunn/fzf.vim'                 " Vim integration for fzf
+    Plug 'tpope/vim-fugitive'               " Git integration
+    Plug 'tpope/vim-commentary'             " Commenting
+    Plug 'morhetz/gruvbox'                  " Colorscheme
+call plug#end()
+
+" Install missing plugins on startup
+if has('vim_starting')
+  autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)')) |
+        \ PlugInstall --sync | q |
+        \ endif
+endif
+
+" Load plugin configs
+if isdirectory(expand('~/.vim/plugin_settings'))
+  for f in split(glob('~/.vim/plugin_settings/*.vim'), '\n')
+    execute 'source' f
+  endfor
+endif
+
+" ------------------------------------
+"       BASIC SETTINGS
+" ------------------------------------
+set nocompatible            " Use Vim defaults, not Vi
+set number                  " Show line numbers
+set relativenumber          " Relative line numbers
+set showmatch               " Highlight matching [{()}]
+set mouse=a                 " Enable mouse support (includes mouse wheel scrolling)
+set ttymouse=sgr            " Enable Selective Graphic Rendition mouse support (required for tmux)
+set clipboard=unnamedplus   " Use system clipboard
+set cursorline              " Highlight current line
+set ruler                   " Show cursor position
+set showcmd                 " Show command in bottom bar
+set splitbelow              " Open new splits below the current 
+
+" ------------------------------------
+"       INDENTATION
+" ------------------------------------
+set tabstop=4               " Number of spaces a <Tab> counts for
+set shiftwidth=4            " Number of spaces to use for autoindent
+set expandtab               " Convert tabs to spaces
+set autoindent              " Auto-indent new lines
+set smartindent             " Smarter indentation
+set smarttab                " Smarter tab behavior
+
+" ------------------------------------
+"       SEARCH
+" ------------------------------------
+set ignorecase              " Ignore case in search
+set smartcase               " Override ignorecase if uppercase is used
+set incsearch               " Incremental search
+set hlsearch                " Highlight search results
+
+" ------------------------------------
+"       FILE SEARCH
+" ------------------------------------
+set path+=**                " Recursively search subdirectories when using :find or tab-completion
+set wildmenu                " Enables completion menu when searching
+set wildignore+=*/node_modules/*,*/.git/*,*/dist/* " Ignore common library directories
+let $FZF_DEFAULT_COMMAND = 'find . -type f -not -path "*/\.git/*" -not -path "*/node_modules/*"'
+
+" ------------------------------------
+"       SCROLLING & VIEW
+" ------------------------------------
+set scrolloff=10            " Keep 10 lines above/below cursor
+set signcolumn=yes          " Always show sign column
+set wrap                    " Wrap long lines (optional)
+set linebreak               " Wrap at word boundaries
+
+" ------------------------------------
+"       FILE HANDLING
+" ------------------------------------
+set hidden                  " Allow switching buffers without saving
+set noswapfile              " Don't use swap files
+set nobackup                " Don't create backup files
+set nowritebackup           " Don't keep backup on save
+set updatetime=300          " Faster updates
+
+" Persistent undo setup
+if has('persistent_undo')
+    let s:undodir = expand('~/.vim/undodir')  " Undo directory
+    if !isdirectory(s:undodir)
+        call mkdir(s:undodir, 'p')            " Create undo directory if missing
+    endif
+    set undofile                              " Enable persistent undo
+    set undodir^=~/.vim/undodir               " Set undo file directory
+endif
+
+" ------------------------------------
+"       DISPLAY WHITESPACE
+" ------------------------------------
+set list                                   " Show invisible characters
+set listchars=tab:»\ ,trail:·,extends:›,precedes:‹ " Define visible symbols
+
+" ------------------------------------
+"       COLORSCHEME & UI
+" ------------------------------------
+syntax on                                 " Enable syntax highlighting
+set background=dark                       " For dark themes
+colorscheme gruvbox                       " Colorscheme
+set laststatus=2                          " Always show status line
+set statusline=%f\ %y\ %m%r%=%-14.(%l,%c%V%)\ %P  " Simple built-in statusline
+
+" ------------------------------------
+"       KEY MAPPINGS
+" ------------------------------------
+let mapleader=" "                         " Set <Leader> to space
+
+nnoremap <leader>h :nohlsearch<CR>        " Clear search highlight
+
+" Toggle line numbers
+nnoremap <leader>n :set number! relativenumber!<CR> " Toggle absolute/relative numbers
+
+" Quickly open .vimrc
+nnoremap <leader>ev :vsplit $MYVIMRC<CR>  " Edit vimrc
+nnoremap <leader>sv :source $MYVIMRC<CR>  " Source vimrc
+
+" Resize splits
+nnoremap <C-Left> :vertical resize +5<CR> " Widen split
+nnoremap <C-Right> :vertical resize -5<CR> " Narrow split
+nnoremap <C-Up> :resize -5<CR>            " Shorten split
+nnoremap <C-Down> :resize +5<CR>          " Lengthen split
+
+" Simple auto-pairs replacement
+inoremap ( ()<Left>
+inoremap [ []<Left>
+inoremap { {}<Left>
+"inoremap " ""<Left>
+inoremap ' ''<Left>
+
+nnoremap <C-n> :NERDTreeToggle<CR>
+
+" ------------------------------------
+"       STARTUP BEHAVIOR
+" ------------------------------------
+
+
+" ------------------------------------
+"       WSL BEHAVIOR
+" ------------------------------------
+let s:osrelease = system('cat /proc/sys/kernel/osrelease') " Detect WSL
+if s:osrelease =~? 'microsoft'
+    let g:is_wsl = 1
+else
+    let g:is_wsl = 0
+endif
+
+if g:is_wsl
+    augroup YankToWindowsClipboard
+        " Clear old autocmds
+        autocmd!
+        " Yank to Windows clipboard on copy
+        autocmd TextYankPost * if v:event.operator ==# 'y' && v:event.regname ==# '' |
+            \ call system('clip.exe', @0) |
+            \ endif
+    augroup END
+endif
